@@ -1,4 +1,4 @@
-ServerTest
+WikiIocTest
 ==========
 
-This repository contains all classes and PHP code to test the server functionality of WikiIoc model
+This repository contains all code to test the WikiIoc application functionality
