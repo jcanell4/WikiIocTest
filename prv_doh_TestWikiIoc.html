@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body>
+        <script>
+            require([
+                 "dojo/_base/xhr"
+                ,"dojo/dom"
+                ,"doh/main"
+                ,"test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                ,"test/CommandTest" //Carreguem la Classe per crear un test
+                ,"test/LoginedCommandTest" //Carreguem la Classe per crear un test
+		,"test/TestResponseHandler"
+		,"test/ArrayChecker"
+            ], function(xhr, dom, doh, WikiIocTester, CommandTest, LoginedCommandTest, TestResponseHandler, ArrayChecker){
+								
+								var wikiIocTester = new WikiIocTester(); //instanciar tester
+								
+								/*PROVES DEL register()*/
+                var commandTest1;
+                var commandTest2;
+                var commandTest3;
+                var commandTest4;
+                
+                commandTest1 = new CommandTest();
+                commandTest1.setTestFunction("loginFailed", function(r, t){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.f(r[0].value.loginResult);
+                            });
+                commandTest1.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                commandTest1.addParameter("do","login");
+                commandTest1.addParameter("u","admin");
+                commandTest1.addParameter("p","admi");
+                wikiIocTester.addTest(commandTest1);
+                
+                commandTest2 = new CommandTest();
+                commandTest2.setTestFunction("loginSuccess", function(r, t){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.t(r[0].value.loginResult);
+                            });
+                commandTest2.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                commandTest2.addParameter("do","login");
+                commandTest2.addParameter("u","admin");
+                commandTest2.addParameter("p","admin");
+                wikiIocTester.addTest(commandTest2);
+                
+                commandTest3 = new CommandTest();
+                commandTest3.setTestFunction("logout", function(r, t){
+                                t.is("login", r[0].type);
+                                t.f(r[0].value.loginRequest);
+                                t.f(r[0].value.loginResult);
+                            });
+                commandTest3.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                commandTest3.addParameter("do","logoff");
+                wikiIocTester.addTest(commandTest3);
+
+                commandTest4 = new LoginedCommandTest();
+                commandTest4.setTestFunction("page", function(r, t){
+                                t.is("html", r[1].type);
+                            });
+                commandTest4.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                commandTest4.addParameter("id","start");
+                wikiIocTester.addTest(commandTest4);
+                
+								//register(String nomTest): enregistre l'array de l'atribut tests com objectes de test a executar
+                wikiIocTester.register("test.prv_prova_REGISTER"); //Aquest nom no surt enlloc?
+                
+                //register(String nomTest, function f):enregistra la funció que rep per paràmetre.
+                var testFunction = function(t){
+										var d = new t.Deferred();
+										var td = xhr.get({
+														url: "/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin",
+														method: "get",
+														handleAs:"json",
+												});
+												td.then(d.getTestCallback(function(r){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.t(r[0].value.loginResult);
+												}));
+										return d;
+                };
+                wikiIocTester.register("testFunctionProva", testFunction);
+                
+                
+                //register(String nomTest, Test t):enregistra l'objecte Test o derivat que rep per paràmetre.
+                var commandTest;
+                commandTest = new LoginedCommandTest();
+                commandTest.setTestFunction("page", function(r, t){
+                                t.is("html", r[1].type);
+                            });
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                commandTest.addParameter("id","start");
+                wikiIocTester.register("TestProvaLogined", commandTest);
+                
+                
+                //register(String nomTest, array de function f): enregistra les funcions que es reben per paràmetre.
+                var testFunction2 = function(t){
+										var d = new t.Deferred();
+										var td = xhr.get({
+														url: "/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=n",
+														method: "get",
+														handleAs:"json",
+												});
+												td.then(d.getTestCallback(function(r){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.f(r[0].value.loginResult);
+												}));
+										return d;
+                };
+                wikiIocTester.register("ArrayFunctionTestProva", [testFunction, testFunction2]);
+                
+                //register(String nomTest, array de Test t):enregistra els objectes Test o derivats que es reben per paràmetre.
+                var commandTest5;
+                var commandTest6;
+                var commandTest7;
+                
+                commandTest5 = new CommandTest();
+                commandTest5.setTestFunction("logout2", function(r, t){
+                                t.is("login", r[0].type);
+                                t.f(r[0].value.loginRequest);
+                                t.f(r[0].value.loginResult);
+                            });
+                commandTest5.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                commandTest5.addParameter("do","logoff");
+
+                commandTest7 = new CommandTest();
+                commandTest7.setTestFunction("loginFailed", function(r, t){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.t(r[0].value.loginResult);
+                            });
+                commandTest7.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                commandTest7.addParameter("do","login");
+                commandTest7.addParameter("u","admin");
+                commandTest7.addParameter("p","admin");
+                
+                commandTest6 = new LoginedCommandTest();
+                commandTest6.setTestFunction("page2", function(r, t){
+                                t.is("html", r[1].type);
+                            });
+                commandTest6.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                commandTest6.addParameter("id","start");
+                
+                wikiIocTester.register("TestProva", [commandTest5, commandTest7, commandTest6]);
+                
+                /*PROVES DEL addTest() */
+                //addTest(String nom, function f): afegeix a tests un objecte Test amb el nom i la funció dels paràmetres
+                wikiIocTester.addTest("addTestFuncionProva", testFunction);
+                
+                //addTest(array de function f): afegeix a tests cada un dels items de l'array del paràmetre.
+                wikiIocTester.addTest([testFunction, testFunction2]);
+                
+                //addTest(array de Test t): afegeix a tests cada un dels items de l'array del paràmetre
+                var commandTest8 = new CommandTest(commandTest5);
+                var commandTest9 = new LoginedCommandTest(commandTest6);
+                var commandTest10 = new CommandTest(commandTest7);
+                
+                wikiIocTester.addTest([commandTest8, commandTest10, commandTest9]);
+                wikiIocTester.register("prv_prova_ADD");
+                //CHECKERS
+		var responseHandler = new TestResponseHandler({checker: new ArrayChecker({size:1})});
+                var commandTest11 = new CommandTest();
+                commandTest11.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=commandreport");
+                commandTest11.addParameter("a","aaaa");
+                commandTest11.addParameter("b","bbbb");
+		commandTest11.setResponseHandler("addTestrespHandler", responseHandler);
+                wikiIocTester.addTest(commandTest11);
+
+								wikiIocTester.register("prv_prova_ResponseHandler", commandTest11);
+                
+                
+                wikiIocTester.run();
+                
+                
+            });             
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>

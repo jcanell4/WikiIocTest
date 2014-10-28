@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body>
+        <script>
+            require([
+                 "dojo/_base/xhr"
+                ,"dojo/dom"
+                ,"doh/runner"
+            ], function(xhr, dom, doh){
+                var tests = [
+                    function xhrGet1(t){
+                        var d = new doh.Deferred();
+                        var td = xhr.get({
+                            url:"/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin",
+                            handleAs:"json"
+                        });
+                        td.then(d.getTestCallback(function(r){
+                                t.is("login", r[0].type);
+                                t.t(r[0].value.loginRequest);
+                                t.t(r[0].value.loginResult);
+                        }));
+                        return d;
+                    },function xhrGet2(t){
+                        var d = new doh.Deferred();
+                        var td = xhr.get({
+                            url:"/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=logoff", 
+                            handleAs:"json"
+                        });
+                        td.then(d.getTestCallback(function(r){
+                            t.is("login", r[0].type);
+                            t.f(r[0].value.loginRequest);
+                            t.f(r[0].value.loginResult);
+                        }));
+                        return d;
+                    },function xhrGet3(t){
+                        var d = new doh.Deferred();
+                        var td = xhr.get({
+                            url:"/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=dm",
+                            handleAs:"json"
+                        });
+                        td.then(d.getTestCallback(function(r){
+                            t.is("login", r[0].type);
+                            t.t(r[0].value.loginRequest);
+                            t.f(r[0].value.loginResult);
+                        }));
+                        return d;
+                    }
+                ];
+                
+                doh.register("ioc/prv/doh", tests);
+                doh.run();
+            });             
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>

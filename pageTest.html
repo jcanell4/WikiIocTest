@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body>
+        <script>
+            require([
+                 "dojo/_base/xhr"
+                ,"test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                ,"test/CommandTest" //Carreguem la Classe per crear un test
+                ,"test/LoginedCommandTest" //Carreguem la Classe per crear un test
+                ,"test/TestErrorResponseHandler"
+                ,"test/TestHttpErrorHandler"
+            ], function(xhr, WikiIocTester, CommandTest, LoginedCommandTest, 
+                            TestErrorResponseHandler, TestHttpErrorHandler){
+                    var wikiIocTester = new WikiIocTester(); //instanciar tester
+                                
+                    var commandTest;
+                    commandTest = new CommandTest();
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                    commandTest.addParameter("id","start");
+                    /*
+                    commandTest.setResponseHandler("page_user_logoff", 
+                            new TestHttpErrorHandler(403));
+                    */
+                    commandTest.setTestFunction("page_user_logoff", 
+                            function(r, t){
+                                t.t(r.status==403);
+                            });
+                    wikiIocTester.addTest(commandTest);
+                    
+                    /*
+                    commandTest = null;
+                    
+                    commandTest = new LoginedCommandTest();
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                    commandTest.addParameter("id","res_de_res");
+                    commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+                    commandTest.setResponseHandler("page_not_found", 
+                                                new TestErrorResponseHandler(1001));                    
+                    wikiIocTester.addTest(commandTest);
+                    
+                    commandTest = null;
+
+                    commandTest = new LoginedCommandTest();
+                    commandTest.setTestFunction("page_found", function(r, t){
+                                t.is("html", r[1].type);
+                            });
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                    commandTest.addParameter("id","start");
+                    commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+                    wikiIocTester.addTest(commandTest);
+                    */
+
+                   //register(String nomTest): enregistre l'array de l'atribut tests com objectes de test a executar
+                wikiIocTester.register("PAGE"); //Aquest nom no surt enlloc?
+                
+                wikiIocTester.run();
+                
+                
+            });             
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>
