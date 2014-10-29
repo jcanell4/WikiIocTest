@@ -9,7 +9,7 @@ define([
    ,"test/AttObjectChecker"
 ], function(declare, lang, TestResponseHandler,ArrayChecker, 
             ObjectChecker, AttNumChecker,  AttRegexChecker, AttObjectChecker){
-    var ret = declare("test.TestHttpErrorHandler", [TestResponseHandler], {
+    var ret = declare("test.TestErrorResponseHandler", [TestResponseHandler], {
         errorCode:null
         ,"-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
@@ -35,7 +35,9 @@ define([
                                     checkers:[
                                         new AttNumChecker({
                                             attributeName:"code",
-                                            value:errorCode})
+                                            value:errorCode,
+                                            __optional__: true
+                                        })
                                     ]
                                 })
                             })
@@ -44,15 +46,6 @@ define([
                 ]
             });
         }
-        
-        /**
-         * Avalua el mètode check del checker amb la resposta que rep
-         * @param HashArray? response Resposta per validar.
-         */ 
-        ,check: function(error, tester) {
-                tester.t(error.status==this.statusCode, "Status incorrect");
-        }
-				
     });
     return ret;
 });

@@ -46,6 +46,9 @@ define([
         ,setCheckers: function(checkers) {
             this.checkers = checkers;
         }
+        ,addChecker: function(checker){
+            this.checkers.push(checker);
+        }
         
         /**
          * Avalua el mètode check del checker amb la resposta que rep
