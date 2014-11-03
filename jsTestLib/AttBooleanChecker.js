@@ -2,7 +2,7 @@ define([
     "dojo/_base/declare"
     ,"test/AbstractAttChecker"
 ], function(declare, AbstractAttChecker){
-    var ret = declare("test.AttNumChecker", [AbstractAttChecker], {
+    var ret = declare("test.AttBooleanChecker", [AbstractAttChecker], {
          value: null
         
         ,getValue: function(){

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<phpunit
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    colors="true"
+    processIsolation="true"
+    stopOnFailure="true"
+    syntaxCheck="false"
+    backupGlobals="false">
+    <testsuites>
+        <file>DokuwikiTestCase.php</file>
+        <file>DokuModelAdapterTestCase.php</file>
+    </testsuites>
+    <php>
+        <const name="DOKU_SRC" value="../../dokuwiki_30/"/>
+    </php>
+</phpunit>
