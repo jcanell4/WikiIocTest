@@ -12,7 +12,7 @@ define([
         }
         
         /**
-         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el patró regular regex.
+         * Verifica l'atribut de response anomenat com attributeName amb el mètode check el Checker associat.
          * @param HashArray? response Resposta per validar.
          */ 
         ,_check: function(response, tester) {

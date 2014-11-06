@@ -12,7 +12,7 @@ define([
             this.value = value;
         }
         /**
-         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el patró regular regex.
+         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el valor boleà de value.
          * @param HashArray? response Resposta per validar.
          */ 
         ,_check: function(response, tester) {

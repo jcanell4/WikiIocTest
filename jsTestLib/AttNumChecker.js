@@ -27,7 +27,7 @@ define([
         }
         
         /**
-         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el patró regular regex.
+         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el valor numèric de value, és més gran que minValue i/o és més petit que maxValue.
          * @param HashArray? response Resposta per validar.
          */ 
         ,_check: function(response, tester) {
