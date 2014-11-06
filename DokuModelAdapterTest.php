@@ -36,6 +36,9 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase{
         }catch (PHPUnit_Framework_Exception $e){
             $this->assertFalse(TRUE);
         }
+        foreach ($resp as $key => $value) {
+            print $key . " : " . $value . "\n";
+        }
         $this->assertEquals($resp['id'], $id_page);
         $this->assertEquals($resp["ns"], $page);
         $this->assertEquals($resp["title"], $title);

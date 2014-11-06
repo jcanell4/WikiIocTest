@@ -21,7 +21,7 @@ define([
             this.attributeName = attributeName;
         }
         /**
-         * Verifica si l'atribut de response anomenat com attributeName coincideix amb el patró regular regex.
+         * Verifica si l'atribut de response anomenat com attributeName coincideix amb la verificació del checker associat.
          * @param HashArray? response Resposta per validar.
          */ 
         ,check: function(response, tester) {
