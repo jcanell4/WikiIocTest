@@ -5,7 +5,7 @@ define([
    ,"test/AttRegexChecker"   
 ], function(declare, lang, ObjectChecker, AttRegexChecker){
     var ret = declare("test.RemoveAllTypeChecker", [ObjectChecker], {
-        ,"-chains-": {
+        "-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
         }
         ,constructor: function(){ 

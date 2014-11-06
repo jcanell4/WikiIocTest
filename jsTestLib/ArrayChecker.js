@@ -71,7 +71,7 @@ define([
              * repetint l'ordre des del començament i fins que s'acabin els ítems de response.*/
             if (this.checkers.length>0) {
                 var lon = this.checkers.length;
-                for (i = 0; i < response.length; i++) {
+                for (var i = 0; i < response.length; i++) {
                     console.log(response[i]);
                     console.log(this.checkers[i%lon]);
                     this.checkers[i%lon].check(response[i], tester);

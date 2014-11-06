@@ -2,18 +2,19 @@ define([
     "dojo/_base/declare"
    ,"dojo/_base/lang"
    ,"test/ObjectChecker"
-   ,"test/AttNumChecker"
+   ,"test/AttBooleanChecker"
    ,"test/AttRegexChecker"
    ,"test/AttObjectChecker"
-], function(declare, lang, ObjectChecker, AttNumChecker,  
+], function(declare, lang, ObjectChecker, AttBooleanChecker,  
                 AttRegexChecker, AttObjectChecker){
     var ret = declare("test.LoginTypeChecker", [ObjectChecker], {
          loginRequest:false
         ,loginResult:false
+        ,userId:null
         ,"-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
         }
-        ,constructor: function(att, lrs){ 
+        ,constructor: function(att, lrs, uid){ 
             if(lang.isObject(att)){ //Se li pot pasar un objecte amb els mateixos noms d'atributs per fer una "fusió"
                 lang.mixin(this, att);
             }else{
@@ -22,6 +23,9 @@ define([
                 }
                 if(lrs){
                     this.loginResult=lrs;
+                }
+                if(uid){
+                    this.userId=uid;
                 }
             }
             var self=this;
@@ -33,12 +37,17 @@ define([
                     attributeName:"value",
                     checker: new ObjectChecker({
                         checkers:[
-                            new AttNumChecker({
+                            new AttBooleanChecker({
                                 attributeName:"loginRequest",
                                 value:self.loginRequest}),
-                            new AttNumChecker({
+                            new AttBooleanChecker({
                                 attributeName:"loginResult",
-                                value:self.loginResult})
+                                value:self.loginResult}),
+                            new AttRegexChecker({
+                                attributeName:"userId",
+                                value:self.userId,
+                                __optional__:true
+                            })
                         ]
                     })
                 })

@@ -8,7 +8,7 @@ define([
          * @param HashArray? response Resposta per validar.
          */ 
         _check: function(response, tester) {
-            tester.t(this.response.hasOwnProperty(this.attributeName));
+            tester.t(response.hasOwnProperty(this.attributeName));
         }
 				
     });

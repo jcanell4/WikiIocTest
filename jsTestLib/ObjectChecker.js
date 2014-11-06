@@ -29,7 +29,7 @@ define([
          */ 
         ,check: function(response, tester) {
             if (this.checkers !== null){
-               for(i=0; i < this.checkers.length; i++){
+               for(var i=0; i < this.checkers.length; i++){
                    this.checkers[i].check(response, tester);
                } 
             }

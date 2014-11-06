@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+        
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body>
+        <script>
+            require([
+                 "dojo/_base/xhr"
+                ,"test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                ,"test/CommandTest" //Carreguem la Classe per crear un test
+                ,"test/LoginedCommandTest" //Carreguem la Classe per crear un test
+                ,"test/TestArrayResponseHandler"
+                ,"test/LoginTypeChecker"
+                ,"test/SectokTypeChecker"
+                ,"test/JsInfoCmdChecker"
+                ,"test/ReloadWidgetCmdChecker"
+                ,"test/RemoveAllTypeChecker"
+                ,"test/RemoveAllWidgetChildrenCmdChecker"
+                ,"test/TitleTypeChecker"
+                ,"test/ProcessFunctionCmdChecker"
+            ], function(xhr, WikiIocTester, CommandTest, LoginedCommandTest, 
+                            TestArrayResponseHandler, LoginTypeChecker,
+                            SectokTypeChecker, JsInfoCmdChecker, 
+                            ReloadWidgetCmdChecker, RemoveAllTypeChecker, 
+                            RemoveAllWidgetChildrenCmdChecker, TitleTypeChecker, 
+                            ProcessFunctionCmdChecker){
+                    var wikiIocTester = new WikiIocTester(); //instanciar tester
+                                
+                    var commandTest;
+                    commandTest = new CommandTest();
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                    commandTest.addParameter("u","admin");
+                    commandTest.addParameter("p","admin");
+                    
+                    var responseHandler = new TestArrayResponseHandler();
+                    responseHandler.addChecker(
+                          new LoginTypeChecker(true, true, "admin")
+                    );
+                    responseHandler.addChecker(
+                          new SectokTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new JsInfoCmdChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ReloadWidgetCmdChecker("tb_index")  
+                    );
+                    responseHandler.addChecker(
+                          new TitleTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ProcessFunctionCmdChecker(
+                                    "ioc/dokuwiki/setSignature",
+                                    true
+                          )  
+                    );
+                    commandTest.setResponseHandler("succcess_login", 
+                            responseHandler);
+                    wikiIocTester.addTest(commandTest);
+
+                    //logoff
+                    commandTest = new CommandTest();
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                    commandTest.addParameter("do","logoff");
+                    
+                    var responseHandler = new TestArrayResponseHandler();
+                    responseHandler.addChecker(
+                          new LoginTypeChecker(false, false)
+                    );
+                    responseHandler.addChecker(
+                          new SectokTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ReloadWidgetCmdChecker("tb_index")  
+                    );
+                    responseHandler.addChecker(
+                          new RemoveAllTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new RemoveAllWidgetChildrenCmdChecker("zonaMetaInfo")  
+                    );
+                    responseHandler.addChecker(
+                          new TitleTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ProcessFunctionCmdChecker(
+                                    "ioc/dokuwiki/setSignature",
+                                    true
+                          )  
+                    );
+
+                    
+                    commandTest.setResponseHandler("logoff", 
+                            responseHandler);
+                    wikiIocTester.addTest(commandTest);
+    
+                //register(String nomTest): enregistre l'array de l'atribut tests com objectes de test a executar
+                wikiIocTester.register("LOGIN"); //Aquest nom no surt enlloc?
+                
+                wikiIocTester.run();
+                
+                
+            });             
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>

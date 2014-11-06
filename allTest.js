@@ -1,6 +1,6 @@
 define(["dojo/has", "doh/main", "require"], function(has, doh, require){
 	if(doh.isBrowser){
-		doh.register("ioc.prv_doh.html", require.toUrl("./prv_doh2.html"), 15000);
-		doh.register("ioc.prv_doh_WikiIocTest.html", require.toUrl("./prv_doh_TestWikiIoc.html"), 15000);
+		doh.register("loginTest", require.toUrl("./loginTest.html"), 15000);
+		doh.register("pageTest", require.toUrl("./pageTest.html"), 15000);
 	}
 });

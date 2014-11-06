@@ -5,7 +5,7 @@ define([
    ,"test/HasAttributeChecker"
 ], function(declare, ObjectChecker, AttRegexChecker, HasAttributeChecker){
     var ret = declare("test.SectokTypeChecker", [ObjectChecker], {
-        ,"-chains-": {
+        "-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
         }
         ,constructor: function(){ 

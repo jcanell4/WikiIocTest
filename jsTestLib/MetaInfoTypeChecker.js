@@ -12,7 +12,7 @@ define([
             this.checkers = [
                 new AttRegexChecker({
                     attributeName:"type",
-                    regex:/html/i}),
+                    regex:/metainfo/i}),
                 new HasAttributeChecker({
                     attributeName:"value"
                 })
