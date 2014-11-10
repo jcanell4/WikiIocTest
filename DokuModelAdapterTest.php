@@ -81,7 +81,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         $title = $page;
         try {
             $resp = $this->getDokuModelAdapter()->getCodePage($page);
-            $this->showParameters("getCodePageTest", $resp);
+            //$this->showParameters("getCodePageTest", $resp);
             $this->assertEquals($resp['id'], $pageId);
             $this->assertEquals($resp["ns"], $page);
             $this->assertEquals($resp["title"], $title);
@@ -119,7 +119,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         $title = $page;
         try {
             $resp = $this->getDokuModelAdapter()->cancelEdition($page);
-            $this->showParameters("cancelEditionTest", $resp);
+            //$this->showParameters("cancelEditionTest", $resp);
             $this->assertEquals($resp['id'], $pageId);
             $this->assertEquals($resp["ns"], $page);
             $this->assertEquals($resp["title"], $title);
@@ -157,7 +157,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         $title = $page;
         try {
             $resp = $this->getDokuModelAdapter()->saveEdition($page);
-            $this->showParameters("saveEditionTest", $resp);
+            //$this->showParameters("saveEditionTest", $resp);
             $this->assertEquals($resp['id'], $pageId);
             $this->assertEquals($resp["ns"], $page);
             $this->assertEquals($resp["title"], $title);
@@ -251,7 +251,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         $mediaFile="cc.png";
         try {
             $resp = $this->getDokuModelAdapter()->getMediaList($page);
-            $this->showParameters("getmedialist", $resp);
+            //$this->showParameters("getmedialist", $resp);
             $this->assertEquals($resp[0], $mediaFile);
         } catch (PHPUnit_Framework_Exception $e) {
             $this->assertFalse(TRUE);
@@ -269,7 +269,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         $imageId = "common:cc.png";
         try {
             $resp = $this->getDokuModelAdapter()->imagePathToId($path);
-            //$this->assertEquals($resp, $imageId);COMPROVAR QUIN ES EL RESULTAT CORRECTE
+            $this->assertEquals($resp, $imageId);//COMPROVAR QUIN ES EL RESULTAT CORRECTE
         } catch (PHPUnit_Framework_Exception $e) {
             $this->assertFalse(TRUE);
         }
@@ -287,6 +287,126 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
         try{
             $resp = $this->getDokuModelAdapter()->getPageFileName($page);
             $this->assertEquals($resp, $path);
+        } catch (PHPUnit_Framework_Exception $e) {
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    
+    /**
+     * @test getMediaUrlTest
+     */
+    
+    public function getMediaUrlTest() {
+        $amp="&amp;";
+        $url="/./lib/exe/fetch.php?";
+        $image = "common:cc.png";
+        $height = "31";
+        $width = "90";
+        $t="1359488666";
+        $tok="f14fbf";
+        $command = $url."t=".$t.$amp."w=".$width.$amp."h=".$height.$amp."tok=".$tok.$amp."media=".$image;
+        try{
+            $resp = $this->getDokuModelAdapter()->getMediaUrl($image);
+            // "/./lib/exe/fetch.php?t=1359488666&amp;w=90&amp;h=31&amp;tok=f14fbf&amp;media=common:cc.png"
+            $this->assertEquals($resp, $command);
+        } catch (PHPUnit_Framework_Exception $e) {
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    /**
+     * @test uploadImageTest
+     */
+    public function uploadImageTest() {
+        $nsTarget = "common";
+        $idTarget = "prova.jpg";
+        $filePathSource = "/tmp/prova.jpg";
+        try{
+            $resp = $this->getDokuModelAdapter()->uploadImage($nsTarget, $idTarget, $filePathSource);
+            print "uploadImage ".$resp."\n";
+            //$this->assertEquals($resp, $path);
+        } catch (PHPUnit_Framework_Exception $e) {
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    /**
+     * @test saveImageTest
+     */
+    public function saveImageTest() {
+        $nsTarget = "common";
+        $idTarget = "prova.jpg";
+        $filePathSource = "/tmp/prova.jpg";
+        try{
+            $resp = $this->getDokuModelAdapter()->saveImage($nsTarget, $idTarget, $filePathSource);
+            print "saveImage ".$resp."\n";
+            //$this->assertEquals($resp, $path);
+        } catch (PHPUnit_Framework_Exception $e) {
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    
+    /**
+     * @test getNsTreeTest
+     */
+    public function getNsTreeTest() {
+        $currentnode = "fp:dam";
+        $type="d";
+        try{
+            $resp = $this->getDokuModelAdapter()->getNsTree($currentnode, 0);
+            $this->showParameters("getNsTree", $resp);//PRINT
+            
+            $this->assertEquals($resp["id"], $currentnode);
+            $this->assertEquals($resp["name"], $currentnode);
+            $this->assertEquals($resp["type"], $type);
+            $this->assertArrayHasKey("children", $resp);
+        } catch (PHPUnit_Framework_Exception $e) {
+            print $e;
+            $this->assertFalse(TRUE);
+        }
+        
+        $currentnode = "common:cc.png";
+        $type="d";
+        try{
+            $resp = $this->getDokuModelAdapter()->getNsTree($currentnode, 0);
+            $this->showParameters("getNsTree", $resp);//PRINT
+            
+            $this->assertEquals($resp["id"], $currentnode);
+            $this->assertEquals($resp["name"], $currentnode);
+            $this->assertEquals($resp["type"], $type);
+            $this->assertArrayHasKey("children", $resp);
+        } catch (PHPUnit_Framework_Exception $e) {
+            print $e;
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    
+    /**
+     * @test getGlobalMessageTest
+     */
+    public function getGlobalMessageTest() {
+        $id = "encoding";
+        $encoding = "utf-8";
+        try{
+            $resp = $this->getDokuModelAdapter()->getGlobalMessage($id);
+            $this->assertEquals($resp, $encoding);
+        } catch (PHPUnit_Framework_Exception $e) {
+            $this->assertFalse(TRUE);
+        }
+    }
+    
+    /**
+     * @test makeFileDirTest
+     */
+    public function makeFileDirTest() {
+        $filePath = "tmp/dani";
+        try{
+            $resp = $this->getDokuModelAdapter()->makeFileDir($filePath);
+            print "makeFileDir ".$resp."\n";
+            //$this->assertEquals($resp, $path);
         } catch (PHPUnit_Framework_Exception $e) {
             $this->assertFalse(TRUE);
         }
