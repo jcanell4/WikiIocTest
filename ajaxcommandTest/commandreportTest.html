@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body>
+        <script>
+            require([
+                "dojo/_base/xhr"
+                        , "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                        , "test/CommandTest" //Carreguem la Classe per crear un test
+                        , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
+                        , "test/TestErrorResponseHandler"
+                        , "test/TestHttpErrorHandler"
+                        , "test/TestArrayResponseHandler"
+                        , "test/JsInfoCmdChecker"
+                        , "test/InfoTypeChecker"
+                        , "test/MetaInfoTypeChecker"
+                        , "test/ProcessDomFromFunctionCmdChecker"
+            ], function(xhr, WikiIocTester, CommandTest, LoginedCommandTest,
+                    TestErrorResponseHandler, TestHttpErrorHandler,
+                    TestArrayResponseHandler, JsInfoCmdChecker,
+                    InfoTypeChecker, MetaInfoTypeChecker,
+                    ProcessDomFromFunctionCmdChecker) {
+                var wikiIocTester = new WikiIocTester(); //instanciar tester
+
+
+                var params = {"p1": "1", "p2": "2", "p3": "3"};
+                var responseHandler = new TestArrayResponseHandler();
+                responseHandler.addChecker(
+                        new InfoTypeChecker(params)
+                );
+
+                var commandTest;
+                commandTest = new CommandTest();
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=commandreport");
+                commandTest.addParameter("p1", "1");
+                commandTest.addParameter("p2", "2");
+                commandTest.addParameter("p3", "3");
+                commandTest.setResponseHandler("commandreport", responseHandler);
+
+                wikiIocTester.addTest(commandTest);
+
+                wikiIocTester.register("COMMANDREPORT");
+
+                wikiIocTester.run();
+
+
+            });
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>

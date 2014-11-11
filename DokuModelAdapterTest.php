@@ -402,7 +402,7 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
      * @test makeFileDirTest
      */
     public function makeFileDirTest() {
-        $filePath = "tmp/dani";
+        $filePath = "tmp/dani/";
         try{
             $resp = $this->getDokuModelAdapter()->makeFileDir($filePath);
             print "makeFileDir ".$resp."\n";

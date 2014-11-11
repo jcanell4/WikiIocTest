@@ -37,7 +37,8 @@
                             RemoveAllWidgetChildrenCmdChecker, TitleTypeChecker, 
                             ProcessFunctionCmdChecker){
                     var wikiIocTester = new WikiIocTester(); //instanciar tester
-                                
+                    
+                    //login correcte
                     var commandTest;
                     commandTest = new CommandTest();
                     commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
@@ -66,10 +67,45 @@
                                     true
                           )  
                     );
-                    commandTest.setResponseHandler("succcess_login", 
+                    commandTest.setResponseHandler("success_login", 
                             responseHandler);
                     wikiIocTester.addTest(commandTest);
-
+                    
+                    //login Incorrecte
+                    commandTest = new CommandTest();
+                    commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
+                    commandTest.addParameter("u","admin");
+                    commandTest.addParameter("p","nomelase");
+                    
+                    var responseHandler = new TestArrayResponseHandler();
+                    responseHandler.addChecker(
+                          new LoginTypeChecker(true, false, "admin")
+                    );
+                    responseHandler.addChecker(
+                          new SectokTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ReloadWidgetCmdChecker("tb_index")  
+                    );
+                    responseHandler.addChecker(
+                          new RemoveAllTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new RemoveAllWidgetChildrenCmdChecker("zonaMetaInfo")  
+                    );
+                    responseHandler.addChecker(
+                          new TitleTypeChecker()  
+                    );
+                    responseHandler.addChecker(
+                          new ProcessFunctionCmdChecker(
+                                    "ioc/dokuwiki/setSignature",
+                                    true
+                          )  
+                    );
+                    commandTest.setResponseHandler("fail_login", 
+                            responseHandler);
+                    wikiIocTester.addTest(commandTest);
+                    
                     //logoff
                     commandTest = new CommandTest();
                     commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login");
@@ -107,7 +143,7 @@
                     wikiIocTester.addTest(commandTest);
     
                 //register(String nomTest): enregistre l'array de l'atribut tests com objectes de test a executar
-                wikiIocTester.register("LOGIN"); //Aquest nom no surt enlloc?
+                wikiIocTester.register("LOGIN"); 
                 
                 wikiIocTester.run();
                 

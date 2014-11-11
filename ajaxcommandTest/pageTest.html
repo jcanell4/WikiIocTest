@@ -81,8 +81,7 @@
                     commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
                     wikiIocTester.addTest(commandTest);
 
-                   //register(String nomTest): enregistre l'array de l'atribut tests com objectes de test a executar
-                wikiIocTester.register("PAGE"); //Aquest nom no surt enlloc?
+                wikiIocTester.register("PAGE");
                 
                 wikiIocTester.run();
                 
