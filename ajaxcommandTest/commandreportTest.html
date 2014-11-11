@@ -20,19 +20,10 @@
                 "dojo/_base/xhr"
                         , "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
                         , "test/CommandTest" //Carreguem la Classe per crear un test
-                        , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
-                        , "test/TestErrorResponseHandler"
-                        , "test/TestHttpErrorHandler"
                         , "test/TestArrayResponseHandler"
-                        , "test/JsInfoCmdChecker"
                         , "test/InfoTypeChecker"
-                        , "test/MetaInfoTypeChecker"
-                        , "test/ProcessDomFromFunctionCmdChecker"
-            ], function(xhr, WikiIocTester, CommandTest, LoginedCommandTest,
-                    TestErrorResponseHandler, TestHttpErrorHandler,
-                    TestArrayResponseHandler, JsInfoCmdChecker,
-                    InfoTypeChecker, MetaInfoTypeChecker,
-                    ProcessDomFromFunctionCmdChecker) {
+            ], function(xhr, WikiIocTester, CommandTest, 
+                    TestArrayResponseHandler, InfoTypeChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 
 

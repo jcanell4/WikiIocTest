@@ -14,7 +14,7 @@ define([
                 paramCheckers.push(
                     new AttRegexChecker({
                         attributeName:key,
-                        value:params[key]
+                        regex:params[key]
                     })
                 )
             }
@@ -24,10 +24,12 @@ define([
                     regex:/info/i}),
                 new AttObjectChecker({
                     attributeName:"value",
-                    checker: new ObjectChecker({
-                        checkers:paramCheckers
+                    checker: new AttObjectChecker({
+                        attributeName:"params",
+                        checker: new ObjectChecker({
+                            checkers:paramCheckers
+                        })                    
                     })
-                    
                 })
             ];
         }
