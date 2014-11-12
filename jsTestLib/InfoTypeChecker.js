@@ -14,7 +14,7 @@ define([
                 paramCheckers.push(
                     new AttRegexChecker({
                         attributeName:key,
-                        regex:params[key]
+                        regex:new RegExp(params[key])
                     })
                 )
             }
@@ -33,40 +33,6 @@ define([
                 })
             ];
         }
-        /*
-        ,constructor: function(att){ 
-            if(lang.isObject(att)){ //Se li pot pasar un objecte amb els mateixos noms d'atributs per fer una "fusió"
-                lang.mixin(this, att);
-            }else{
-                if(att){
-                    this.id = att;
-                }
-            }            
-            var self=this;
-            this.checkers = [
-                new AttRegexChecker({
-                    attributeName:"type",
-                    regex:/html/i}),
-                new AttObjectChecker({
-                    attributeName:"value",
-                    checker: new ObjectChecker({
-                        checkers:[
-                            new AttRegexChecker({
-                                attributeName:"id",
-                                value:self.id.replace(/:/g, "_")}),
-                            new AttRegexChecker({
-                                attributeName:"ns",
-                                value:self.id}),
-                            new HasAttributeChecker({
-                                attributeName:"title"}),
-                            new HasAttributeChecker({
-                                attributeName:"content"})
-                        ]
-                    })
-                    
-                })
-            ];
-        }*/
     });
     return ret;
 });

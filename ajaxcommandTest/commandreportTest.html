@@ -16,13 +16,11 @@
     </head>
     <body>
         <script>
-            require([
-                "dojo/_base/xhr"
-                        , "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
-                        , "test/CommandTest" //Carreguem la Classe per crear un test
-                        , "test/TestArrayResponseHandler"
-                        , "test/InfoTypeChecker"
-            ], function(xhr, WikiIocTester, CommandTest, 
+            require(["test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                   , "test/CommandTest" //Carreguem la Classe per crear un test
+                   , "test/TestArrayResponseHandler"
+                   , "test/InfoTypeChecker"
+            ], function(WikiIocTester, CommandTest, 
                     TestArrayResponseHandler, InfoTypeChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 

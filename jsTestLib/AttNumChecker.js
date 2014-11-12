@@ -33,7 +33,7 @@ define([
         ,_check: function(response, tester) {
             var num = parseFloat(response[this.attributeName]);
             if(this.value !== null) {
-                tester.t(num ==(this.value));
+                tester.t(num ===(this.value));
             }else{
                 if(this.minValue!==null){
                     tester.t(num >= (this.minValue));

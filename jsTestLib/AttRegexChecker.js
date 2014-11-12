@@ -19,7 +19,8 @@ define([
          */ 
         ,_check: function(response, tester) {
             if(this.regex){
-                tester.t(response[this.attributeName].match(this.regex));
+                //tester.t(!(response[this.attributeName].match(this.regex) === null));
+                tester.t(this.regex.test(response[this.attributeName]));
             }
         }
 				

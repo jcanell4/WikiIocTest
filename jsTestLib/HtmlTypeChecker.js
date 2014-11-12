@@ -31,10 +31,10 @@ define([
                         checkers:[
                             new AttRegexChecker({
                                 attributeName:"id",
-                                value:self.id.replace(/:/g, "_")}),
+                                regex:new RegExp(self.id.replace(/:/g, "_"))}),
                             new AttRegexChecker({
                                 attributeName:"ns",
-                                value:self.id}),
+                                regex:new RegExp(self.id)}),
                             new HasAttributeChecker({
                                 attributeName:"title"}),
                             new HasAttributeChecker({

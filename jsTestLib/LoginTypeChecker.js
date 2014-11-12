@@ -45,7 +45,7 @@ define([
                                 value:self.loginResult}),
                             new AttRegexChecker({
                                 attributeName:"userId",
-                                value:self.userId,
+                                regex:self.userId,
                                 __optional__:true
                             })
                         ]
