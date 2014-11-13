@@ -33,7 +33,7 @@
                 commandTest.addParameter("p1", "1");
                 commandTest.addParameter("p2", "2");
                 commandTest.addParameter("p3", "3");
-                commandTest.setResponseHandler("auth_commandreport_logoff", new TestHttpErrorHandler(403));
+                commandTest.setResponseHandler("auth_commandreport_user_logoff", new TestHttpErrorHandler(403));
 
                 wikiIocTester.addTest(commandTest);
                 
