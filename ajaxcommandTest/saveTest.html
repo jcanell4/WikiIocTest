@@ -20,18 +20,13 @@
                 "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
                         , "test/CommandTest" //Carreguem la Classe per crear un test
                         , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
-                        , "test/TestErrorResponseHandler"
                         , "test/TestHttpErrorHandler"
                         , "test/TestArrayResponseHandler"
-                        , "test/JsInfoCmdChecker"
-                        , "test/HtmlTypeChecker"
-                        , "test/MetaInfoTypeChecker"
                         , "test/ProcessFunctionCmdChecker"
+                        , "test/DataTypeChecker"
             ], function(WikiIocTester, CommandTest, LoginedCommandTest,
-                    TestErrorResponseHandler, TestHttpErrorHandler,
-                    TestArrayResponseHandler, JsInfoCmdChecker,
-                    DataTypeChecker, MetaInfoTypeChecker,
-                    ProcessFunctionCmdChecker) {
+                    TestHttpErrorHandler,TestArrayResponseHandler,
+                    ProcessFunctionCmdChecker, DataTypeChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 
                 var commandTest;

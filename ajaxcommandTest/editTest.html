@@ -16,51 +16,43 @@
     </head>
     <body>
         <script>
-            require(["test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+            require([
+                "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
                         , "test/CommandTest" //Carreguem la Classe per crear un test
                         , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
-                        , "test/TestErrorResponseHandler"
                         , "test/TestHttpErrorHandler"
-                        , "test/HtmlTypeChecker"
                         , "test/TestArrayResponseHandler"
+                        , "test/DataTypeChecker"
             ], function(WikiIocTester, CommandTest, LoginedCommandTest,
-                    TestErrorResponseHandler, TestHttpErrorHandler, 
-                    HtmlTypeChecker, TestArrayResponseHandler) {
+            TestHttpErrorHandler, TestArrayResponseHandler, DataTypeChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
-
 
                 var commandTest;
                 commandTest = new CommandTest();
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=new_page");
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=edit");
                 commandTest.addParameter("id", "start");
-                commandTest.setResponseHandler("new_page_logoff", new TestHttpErrorHandler(403));
 
+                commandTest.setResponseHandler("edit_user_logoff",
+                        new TestHttpErrorHandler(403));
                 wikiIocTester.addTest(commandTest);
 
                 commandTest = null;
 
+
+                var responseHandler = new TestArrayResponseHandler();
+                responseHandler.addChecker(new DataTypeChecker("wiki:syntax"));
+
                 commandTest = new LoginedCommandTest();
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=new_page");
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=edit");
                 commandTest.addParameter("id", "wiki:syntax");
                 commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
-                commandTest.setResponseHandler("new_page_already_exists", new TestErrorResponseHandler(1002));
-                wikiIocTester.addTest(commandTest);
-                
-                commandTest = null;
-                
-                var responseHandler = new TestArrayResponseHandler();
-                responseHandler.addChecker(new HtmlTypeChecker("noexisteix"));
-                
-                commandTest = new LoginedCommandTest();
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=new_page");
-                commandTest.addParameter("id", "noexisteix");
-                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
-                commandTest.setResponseHandler("new_page", responseHandler);
+                commandTest.setResponseHandler("edit", responseHandler);
                 wikiIocTester.addTest(commandTest);
 
-                wikiIocTester.register("NEW_PAGE");
+                wikiIocTester.register("EDIT");
 
                 wikiIocTester.run();
+
 
             });
         </script>

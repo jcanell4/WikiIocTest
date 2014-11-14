@@ -20,47 +20,37 @@
                 "test/WikiIocTester"//Carreguem la Classe per gestionar els tests
                         , "test/CommandTest" //Carreguem la Classe per crear un test
                         , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
-                        , "test/TestErrorResponseHandler"
                         , "test/TestHttpErrorHandler"
                         , "test/TestArrayResponseHandler"
                         , "test/JsInfoCmdChecker"
                         , "test/HtmlTypeChecker"
                         , "test/MetaInfoTypeChecker"
                         , "test/ProcessDomFromFunctionCmdChecker"
+                        , "test/ProcessFunctionCmdChecker"
             ], function(WikiIocTester, CommandTest, LoginedCommandTest,
-                    TestErrorResponseHandler, TestHttpErrorHandler,
-                    TestArrayResponseHandler, JsInfoCmdChecker,
-                    HtmlTypeChecker, MetaInfoTypeChecker,
-                    ProcessDomFromFunctionCmdChecker) {
+                    TestHttpErrorHandler,TestArrayResponseHandler, JsInfoCmdChecker,
+                    HtmlTypeChecker, MetaInfoTypeChecker,ProcessDomFromFunctionCmdChecker,
+                    ProcessFunctionCmdChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 
                 var commandTest;
                 commandTest = new CommandTest();
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=cancel");
                 commandTest.addParameter("id", "start");
 
-                commandTest.setResponseHandler("page_user_logoff",
+                commandTest.setResponseHandler("cancel_user_logoff",
                         new TestHttpErrorHandler(403));
                 wikiIocTester.addTest(commandTest);
 
                 commandTest = null;
 
-                commandTest = new LoginedCommandTest();
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
-                commandTest.addParameter("id", "res_de_res");
-                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
-                commandTest.setResponseHandler("page_not_found",
-                        new TestErrorResponseHandler(1001));
-                wikiIocTester.addTest(commandTest);
-
-                commandTest = null;
 
                 var responseHandler = new TestArrayResponseHandler();
                 responseHandler.addChecker(
                         new JsInfoCmdChecker()
                         );
                 responseHandler.addChecker(
-                        new HtmlTypeChecker("wiki:syntax")
+                        new HtmlTypeChecker("start")
                         );
                 responseHandler.addChecker(
                         new MetaInfoTypeChecker()
@@ -68,23 +58,36 @@
                 responseHandler.addChecker(
                         new ProcessDomFromFunctionCmdChecker(
                                 "ioc/dokuwiki/processContentPage",
-                                "syntax",
+                                "start",
+                                true
+                                )
+                        );
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processCancellation",
                                 true
                                 )
                         );
 
                 commandTest = new LoginedCommandTest();
                 commandTest.setResponseHandler("page_found", responseHandler);
-                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
-                commandTest.addParameter("id", "wiki:syntax");
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=cancel");
+                commandTest.addParameter("id", "start");
                 commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
                 wikiIocTester.addTest(commandTest);
 
-                wikiIocTester.register("PAGE");
+                wikiIocTester.register("CANCEL");
 
                 wikiIocTester.run();
-
-
+                /*
+                [
+                    {"type": "command", "value": {"type": "jsinfo", "value": {"sectokParamName": "sectok", "storeDataParamName": "storeData", "id": "start", "namespace": ""}}}
+                    , {"type": "html", "value": {"id":"start", "ns":"start", "title":"start", "content":"sdasdsd"\n}}
+                    , {"type": "metainfo", "value": {"docId": "start", "meta": [{"id": "start_toc", "title": "Taula de continguts", "content": ""}]}},
+                    {"type": "command", "value": {"type": "process_dom_from_function", "id": "start", "amd": true, "processName": "ioc\/dokuwiki\/processContentPage", "params": {"ns": "start", "command": "lib\/plugins\/ajaxcommand\/ajax.php?call=edit"}}},
+                    {"type": "command", "value": {"type": "process_function", "amd": true, "processName": "ioc\/dokuwiki\/processCancellation"}},
+                    {"type": "info", "value": " "}
+                ]*/
             });
         </script>
         <div id="results"> </div>
