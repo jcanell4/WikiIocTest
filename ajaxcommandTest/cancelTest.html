@@ -27,10 +27,11 @@
                         , "test/MetaInfoTypeChecker"
                         , "test/ProcessDomFromFunctionCmdChecker"
                         , "test/ProcessFunctionCmdChecker"
+                        , "test/InfoTypeChecker"
             ], function(WikiIocTester, CommandTest, LoginedCommandTest,
                     TestHttpErrorHandler,TestArrayResponseHandler, JsInfoCmdChecker,
                     HtmlTypeChecker, MetaInfoTypeChecker,ProcessDomFromFunctionCmdChecker,
-                    ProcessFunctionCmdChecker) {
+                    ProcessFunctionCmdChecker, InfoTypeChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 
                 var commandTest;
@@ -68,6 +69,7 @@
                                 true
                                 )
                         );
+                responseHandler.addChecker(new InfoTypeChecker());
 
                 commandTest = new LoginedCommandTest();
                 commandTest.setResponseHandler("page_found", responseHandler);

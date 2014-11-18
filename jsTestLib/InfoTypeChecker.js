@@ -3,26 +3,32 @@ define([
    ,"test/ObjectChecker"
    ,"test/AttRegexChecker"
    ,"test/AttObjectChecker"
-], function(declare, ObjectChecker, AttRegexChecker, AttObjectChecker){
-    var ret = declare("test.TitleTypeChecker", [ObjectChecker], {
+   ,"test/HasAttributeChecker"
+], function(declare, ObjectChecker, AttRegexChecker, AttObjectChecker, 
+            HasAttributeChecker){
+    var ret = declare("test.InfoTypeChecker", [ObjectChecker], {
         "-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
         }
         ,constructor: function(params){
+            var valueChecker;
             var paramCheckers = new Array();
-            for(var key in params){
-                paramCheckers.push(
-                    new AttRegexChecker({
-                        attributeName:key,
-                        regex:new RegExp(params[key])
-                    })
-                )
+            if(params){
+                for(var key in params){
+                    paramCheckers.push(
+                        new AttRegexChecker({
+                            attributeName:key,
+                            regex:new RegExp(params[key])
+                        })
+                    )
+                }
             }
-            this.checkers = [
-                new AttRegexChecker({
-                    attributeName:"type",
-                    regex:/info/i}),
-                new AttObjectChecker({
+            if(paramCheckers.length==0){
+                valueChecker = new HasAttributeChecker({
+                    attributeName:"value"
+                });
+            }else{
+                valueChecker=new AttObjectChecker({
                     attributeName:"value",
                     checker: new AttObjectChecker({
                         attributeName:"params",
@@ -30,7 +36,13 @@ define([
                             checkers:paramCheckers
                         })                    
                     })
-                })
+                });
+            }
+            this.checkers = [
+                new AttRegexChecker({
+                    attributeName:"type",
+                    regex:/info/i}),
+                valueChecker
             ];
         }
     });

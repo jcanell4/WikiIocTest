@@ -49,6 +49,18 @@
                                 )
                 );
                 responseHandler.addChecker(new DataTypeChecker("start"));
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processEditing",
+                                true
+                                )
+                );
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processAceEditor",
+                                true
+                                )
+                );
 
                 commandTest = new LoginedCommandTest();
                 commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=save");

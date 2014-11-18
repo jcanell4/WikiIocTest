@@ -21,10 +21,14 @@
                         , "test/CommandTest" //Carreguem la Classe per crear un test
                         , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
                         , "test/TestHttpErrorHandler"
+                        , "test/TestErrorResponseHandler"
                         , "test/TestArrayResponseHandler"
                         , "test/DataTypeChecker"
+                        , "test/ProcessFunctionCmdChecker"
             ], function(WikiIocTester, CommandTest, LoginedCommandTest,
-            TestHttpErrorHandler, TestArrayResponseHandler, DataTypeChecker) {
+                            TestHttpErrorHandler, TestErrorResponseHandler, 
+                            TestArrayResponseHandler, DataTypeChecker,
+                            ProcessFunctionCmdChecker) {
                 var wikiIocTester = new WikiIocTester(); //instanciar tester
 
                 var commandTest;
@@ -50,6 +54,18 @@
 
                 var responseHandler = new TestArrayResponseHandler();
                 responseHandler.addChecker(new DataTypeChecker("wiki:syntax"));
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processEditing",
+                                true
+                                )
+                );
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processAceEditor",
+                                true
+                                )
+                );
 
                 commandTest = new LoginedCommandTest();
                 commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=edit");
