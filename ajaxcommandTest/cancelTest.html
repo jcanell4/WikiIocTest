@@ -75,6 +75,38 @@
                 commandTest.addParameter("id", "start");
                 commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
                 wikiIocTester.addTest(commandTest);
+                
+                responseHandler = null;
+                responseHandler = new TestArrayResponseHandler();
+                responseHandler.addChecker(
+                        new JsInfoCmdChecker()
+                        );
+                responseHandler.addChecker(
+                        new HtmlTypeChecker("noexisteix")
+                        );
+                responseHandler.addChecker(
+                        new MetaInfoTypeChecker()
+                        );
+                responseHandler.addChecker(
+                        new ProcessDomFromFunctionCmdChecker(
+                                "ioc/dokuwiki/processContentPage",
+                                "noexisteix",
+                                true
+                                )
+                        );
+                responseHandler.addChecker(
+                        new ProcessFunctionCmdChecker(
+                                "ioc/dokuwiki/processCancellation",
+                                true
+                                )
+                        );
+
+                commandTest = new LoginedCommandTest();
+                commandTest.setResponseHandler("page_not_found", responseHandler);
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=cancel");
+                commandTest.addParameter("id", "noexisteix");
+                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+                wikiIocTester.addTest(commandTest);
 
                 wikiIocTester.register("CANCEL");
 

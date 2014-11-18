@@ -37,7 +37,16 @@
                 wikiIocTester.addTest(commandTest);
 
                 commandTest = null;
+                
+                commandTest = null;
 
+                commandTest = new LoginedCommandTest();
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=page");
+                commandTest.addParameter("id", "noexisteix");
+                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+                commandTest.setResponseHandler("page_not_found",
+                        new TestErrorResponseHandler(1001));
+                wikiIocTester.addTest(commandTest);
 
                 var responseHandler = new TestArrayResponseHandler();
                 responseHandler.addChecker(new DataTypeChecker("wiki:syntax"));
