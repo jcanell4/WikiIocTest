@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+        
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dijit/themes/claro/claro.css' />
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dijit/themes/claro/document.css'/>
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>	
+
+        <script>
+            require(["ioc/dokuwiki/processShowingImage"
+                        , "dijit/form/Button"
+                        , "dojo/domReady!"
+            ], function(processShowingImage, Button) {
+                    var myButton = new Button({
+                        label: "Show me!",
+                        onClick: function(){
+                            processShowingImage({
+                                imageTitle:"Títol de la imatge",
+                                content:"<div>"
+                                        +"<p> HOLA </p>"
+                                        +"<p> ADEU </p>"
+                                        +"</div>",
+                                imageName:"fp:m03:u02:a1:unaImatge.png"
+                            });
+                        }
+                    }, "progbutton").startup();
+            });
+        </script>            
+</head>
+<body class="claro">
+    <p>When pressing this button the dialog will popup. Notice this time there is no DOM node with content for the dialog:</p>
+    <button id="progbutton" type="button">Show me!</button>
+</body>
+</html>
