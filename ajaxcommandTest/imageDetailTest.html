@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PRV  DOH TESTER</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+
+        <!--style type="text/css">
+            @import "../dojo-release-1.8.3-src/dojo/resources/dojo.css";
+        </style-->
+
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dijit/themes/claro/claro.css' />
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dijit/themes/claro/document.css'/>
+        <link rel='stylesheet' href='//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/resources/dojo.css' />
+
+        <script type="text/javascript" charset="utf-8" src="dojoConfig.js"></script>
+        <script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/dojo/1.10.1/dojo/dojo.js"></script>
+    </head>
+    <body class="claro">
+        <script>
+            require(["test/WikiIocTester"//Carreguem la Classe per gestionar els tests
+                        , "test/CommandTest" //Carreguem la Classe per crear un test
+                        , "test/LoginedCommandTest" //Carreguem la Classe per crear un test
+                        , "test/TestErrorResponseHandler"
+                        , "test/TestHttpErrorHandler"
+                        , "test/TestArrayResponseHandler"
+                        , "test/ProcessFunctionCmdChecker"
+                        , "dojo/domReady!"
+            ], function(WikiIocTester, CommandTest, LoginedCommandTest,
+                    TestErrorResponseHandler, TestHttpErrorHandler, 
+                    TestArrayResponseHandler, ProcessFunctionCmdChecker) {
+                var wikiIocTester = new WikiIocTester(); //instanciar tester
+
+
+                var commandTest;
+                commandTest = new CommandTest();
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=get_image_detail");
+                commandTest.addParameter("fromId","fp:dam:m03:u1:a1:continguts")
+                commandTest.addParameter("imageId", "fp:dam:m03:u1:ic10m03u1_01.png");
+                commandTest.setResponseHandler("imageDetail_logoff", new TestHttpErrorHandler(403));
+
+                wikiIocTester.addTest(commandTest);
+
+                commandTest = null;
+
+                commandTest = new LoginedCommandTest();
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=get_image_detail");
+                commandTest.addParameter("fromId","fp:dam:m03:u1:a1:continguts")
+                commandTest.addParameter("imageId", "fp:dam:m03:u1:ic10m03u1_01.png");
+                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+
+                var responseHandler = new TestArrayResponseHandler();
+                responseHandler.addChecker(new ProcessFunctionCmdChecker(
+                        "ioc/dokuwiki/processShowingImage", 
+                        true,
+                        {
+                            content:undefined, 
+                            imageTitle:undefined, 
+                            imageName:"fp:dam:m03:u1:ic10m03u1_01.png"
+                        }
+                ));
+                commandTest.setResponseHandler("imageDetail_ok", responseHandler);
+                
+                wikiIocTester.addTest(commandTest);
+
+                wikiIocTester.register("IMAGE_DETAIL");
+
+                wikiIocTester.run();
+
+            });
+        </script>
+        <div id="results"> </div>
+    </body>
+</html>

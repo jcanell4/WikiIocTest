@@ -9,5 +9,6 @@ define(["doh/main", "require"], function(doh, require){
         
         doh.register("editTest", require.toUrl("./editTest.html"), 25000);
         doh.register("cancelTest", require.toUrl("./cancelTest.html"), 25000);
+        doh.register("imageDetailTest", require.toUrl("./imageDetailTest.html"), 25000);
     }
 });
