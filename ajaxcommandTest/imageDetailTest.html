@@ -42,7 +42,16 @@
                 wikiIocTester.addTest(commandTest);
 
                 commandTest = null;
+                commandTest = new LoginedCommandTest();
+                commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=get_image_detail");
+                commandTest.addParameter("fromId","fp:dam:m03:u1:a1:continguts")
+                commandTest.addParameter("imageId", "fp:dam:m03:u1:i02.png");
+                commandTest.setUrlToLogin("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=login&do=login&u=admin&p=admin");
+                commandTest.setResponseHandler("imageDetail_ko", new TestHttpErrorHandler(404));
+                
+                wikiIocTester.addTest(commandTest);
 
+                commandTest = null;
                 commandTest = new LoginedCommandTest();
                 commandTest.setUrl("/dokuwiki_30/lib/plugins/ajaxcommand/ajax.php?call=get_image_detail");
                 commandTest.addParameter("fromId","fp:dam:m03:u1:a1:continguts")
@@ -62,7 +71,6 @@
                 commandTest.setResponseHandler("imageDetail_ok", responseHandler);
                 
                 wikiIocTester.addTest(commandTest);
-
                 wikiIocTester.register("IMAGE_DETAIL");
 
                 wikiIocTester.run();
