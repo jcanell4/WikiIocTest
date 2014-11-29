@@ -10,7 +10,12 @@ class DokuModelAdapterTest extends DokuModelAdapterTestCase {
     public function __construct($name = "DokuModelAdapterTest") {
         parent::__construct($name);
     }
-
+    
+    /**
+     * Escriu per pantalla un array de clau/valor
+     * @param string $funcName
+     * @param array $resp
+     */
     private function showParameters($funcName, $resp) {
         print "PARAMETRES DE: " . $funcName . "\n";
         foreach ($resp as $key => $value) {
