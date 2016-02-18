@@ -6,7 +6,7 @@
  * @author Daniel Criado Casas<dani.criado.casas@gmail.com>
  */
 require_once 'DokuwikiTestCase.php';
-require_once DOKU_INC.'lib/plugins/wikiiocmodel/default/DokuModelAdapter.php';
+require_once DOKU_INC.'lib/plugins/wikiiocmodel/projects/default/DokuModelAdapter.php';
 class DokuModelAdapterTestCase extends DokuwikiTestCase{
     private $adapter;
     
