@@ -10,7 +10,7 @@ define([
     var ret = declare("test.LoginTypeChecker", [ObjectChecker], {
          loginRequest:false
         ,loginResult:false
-        ,userId:null
+        ,username:null
         ,"-chains-": {
             constructor: "manual"  //evita la crida al constructor del pare
         }
@@ -25,7 +25,7 @@ define([
                     this.loginResult=lrs;
                 }
                 if(uid){
-                    this.userId=uid;
+                    this.username=uid;
                 }
             }
             var self=this;
@@ -45,7 +45,7 @@ define([
                                 value:self.loginResult}),
                             new AttRegexChecker({
                                 attributeName:"userId",
-                                regex:new RegExp(self.userId),
+                                regex:new RegExp(self.username),
                                 __optional__:true
                             })
                         ]
